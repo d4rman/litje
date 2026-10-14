@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111315">
+  <meta name="color-scheme" content="dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Литьё">
+  <meta name="description" content="Личный гайд домашней мастерской литья: олово и серебро.">
+  <title>Мастерская литья</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body data-mode="tin">
+  <!-- Общие градиенты/паттерны для всех SVG на странице (не display:none — иначе ссылки ломаются) -->
+  <svg class="svg-defs" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- жидкое олово: зеркальное, НЕ светится -->
+      <linearGradient id="gMoltenTin" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffffff"/>
+        <stop offset=".35" stop-color="#e3e7ec"/>
+        <stop offset=".7" stop-color="#b3bcc6"/>
+        <stop offset="1" stop-color="#8d97a3"/>
+      </linearGradient>
+      <!-- жидкое серебро ~1000 °C: светится оранжево-жёлтым -->
+      <linearGradient id="gMoltenSilver" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff8dc"/>
+        <stop offset=".35" stop-color="#ffd86b"/>
+        <stop offset=".75" stop-color="#ff9a2e"/>
+        <stop offset="1" stop-color="#e2561a"/>
+      </linearGradient>
+      <linearGradient id="gSolidTin" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#d3d8de"/><stop offset="1" stop-color="#868f99"/>
+      </linearGradient>
+      <linearGradient id="gSolidSilver" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#d7dee6"/><stop offset="1" stop-color="#9eabb9"/>
+      </linearGradient>
+      <linearGradient id="gGraphite" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2a2d31"/><stop offset=".45" stop-color="#5a5f66"/><stop offset="1" stop-color="#202326"/>
+      </linearGradient>
+      <linearGradient id="gSteel" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#6d7680"/><stop offset=".5" stop-color="#d0d6dd"/><stop offset="1" stop-color="#6f7882"/>
+      </linearGradient>
+      <linearGradient id="gSteelV" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#d0d6dd"/><stop offset="1" stop-color="#6d7680"/>
+      </linearGradient>
+      <linearGradient id="gPlaster" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f1ece1"/><stop offset="1" stop-color="#d6cdbb"/>
+      </linearGradient>
+      <linearGradient id="gPlasterWet" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#dfe5ea"/><stop offset="1" stop-color="#b9c3cb"/>
+      </linearGradient>
+      <linearGradient id="gWood" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#b07a47"/><stop offset="1" stop-color="#7a5230"/>
+      </linearGradient>
+      <linearGradient id="gModel" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#5fe0cf"/><stop offset="1" stop-color="#1f8f82"/>
+      </linearGradient>
+      <linearGradient id="gSilicone" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#e0624f"/><stop offset="1" stop-color="#a8352a"/>
+      </linearGradient>
+      <linearGradient id="gClay" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#8b9a73"/><stop offset="1" stop-color="#66734f"/>
+      </linearGradient>
+      <linearGradient id="gFurnace" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2b2f34"/><stop offset=".5" stop-color="#3d434a"/><stop offset="1" stop-color="#25292d"/>
+      </linearGradient>
+      <linearGradient id="gAcid" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#d9f2a0" stop-opacity=".85"/><stop offset="1" stop-color="#9cc95a" stop-opacity=".85"/>
+      </linearGradient>
+      <radialGradient id="gHeat" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="#ffcf6b" stop-opacity=".95"/>
+        <stop offset=".5" stop-color="#ff7a1a" stop-opacity=".45"/>
+        <stop offset="1" stop-color="#ff4d00" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="gCool" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="#cfe3ff" stop-opacity=".5"/>
+        <stop offset="1" stop-color="#cfe3ff" stop-opacity="0"/>
+      </radialGradient>
+      <pattern id="pSand" width="10" height="10" patternUnits="userSpaceOnUse">
+        <rect width="10" height="10" fill="#5e4632"/>
+        <circle cx="2" cy="3" r="1" fill="#735a42"/>
+        <circle cx="7" cy="7" r="1.1" fill="#4b3727"/>
+        <circle cx="8" cy="2" r=".7" fill="#7d6349"/>
+        <circle cx="4" cy="8" r=".6" fill="#6b523b"/>
+      </pattern>
+      <pattern id="pSandDry" width="10" height="10" patternUnits="userSpaceOnUse">
+        <rect width="10" height="10" fill="#cdb98f"/>
+        <circle cx="2" cy="3" r="1" fill="#e1d0a8"/>
+        <circle cx="7" cy="7" r="1.1" fill="#b39f76"/>
+        <circle cx="8" cy="2" r=".7" fill="#ead9b4"/>
+      </pattern>
+      <pattern id="pPlaster" width="14" height="14" patternUnits="userSpaceOnUse">
+        <rect width="14" height="14" fill="url(#gPlaster)"/>
+        <circle cx="3" cy="4" r=".8" fill="#cbbfa8"/>
+        <circle cx="10" cy="10" r=".7" fill="#c4b79e"/>
+      </pattern>
+      <pattern id="pBrick" width="40" height="20" patternUnits="userSpaceOnUse">
+        <rect width="40" height="20" fill="#b9874f"/>
+        <path d="M0 10H40M20 0V10M0 10V20M40 10V20" stroke="#8d6237" stroke-width="2"/>
+      </pattern>
+      <filter id="fGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="fBlur" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="8"/>
+      </filter>
+      <marker id="mArrW" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0L10 5L0 10z" fill="#ece7df"/>
+      </marker>
+      <marker id="mArrA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0L10 5L0 10z" fill="#ffb347"/>
+      </marker>
+      <marker id="mArrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0L10 5L0 10z" fill="#8fd0ff"/>
+      </marker>
+      <marker id="mArrR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0L10 5L0 10z" fill="#ff5148"/>
+      </marker>
+      <marker id="mArrG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0L10 5L0 10z" fill="#45d483"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <header class="topbar">
+    <button class="icon-btn back-btn" id="backBtn" aria-label="Назад" hidden></button>
+    <a class="brand" href="#/" id="brand"><span class="brand-mark" id="brandMark"></span><span class="brand-text" id="pageTitle">Мастерская литья</span></a>
+    <div class="mode-switch" role="radiogroup" aria-label="Режим">
+      <button role="radio" data-mode-set="tin" aria-checked="true"><span class="ms-full">Олово</span><span class="ms-short">Sn</span></button>
+      <button role="radio" data-mode-set="silver" aria-checked="false"><span class="ms-full">Серебро</span><span class="ms-short">Ag</span></button>
+      <span class="ms-thumb" aria-hidden="true"></span>
+    </div>
+  </header>
+
+  <main id="view" tabindex="-1"></main>
+
+  <nav class="bottom-nav" id="bottomNav" aria-label="Быстрый доступ"></nav>
+
+  <div class="toast-wrap" id="toasts" aria-live="polite"></div>
+  <div class="modal-root" id="modalRoot"></div>
+
+  <noscript><p style="padding:24px">Включите JavaScript — приложение работает без интернета, но на JS.</p></noscript>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
